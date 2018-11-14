@@ -449,8 +449,7 @@ var Main = (function (_super) {
     __extends(Main, _super);
     function Main() {
         var _this = _super.call(this) || this;
-        SharedManager.showShareMenu();
-        SharedManager.getUpdateManager();
+        SharedManager.init();
         return _this;
     }
     Main.prototype.createChildren = function () {
@@ -615,76 +614,84 @@ var SharedManagerClass = (function () {
         this.dayScore30 = 0;
         this.dayScore1min = 0;
         this.dayScore1combo = 0;
+        this.titles = [
+            ["[有人@我]：智商超200的快来玩这游戏！", 'resource/assets/images/Icon48.png'],
+            ["凭智商玩的得好，为什么要停下来", 'resource/assets/images/Icon48.png'],
+            ["这游戏也太虐了，我为什么要点进来…", 'resource/assets/images/Icon48.png'],
+            ["300分（分值），我不是针对谁，在座的各位都玩不过我~", 'resource/assets/images/Icon48.png'],
+            ["据说只有1%的人能上300分（分值），需要超强逻辑", 'resource/assets/images/Icon48.png'],
+            ["战五渣们，来看看你们的逻辑分数吧", 'resource/assets/images/Icon48.png']
+        ];
     }
     SharedManagerClass.getInstance = function () {
         !this.instance && (this.instance = new SharedManagerClass());
         return this.instance;
     };
     SharedManagerClass.prototype.init = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var i;
-            return __generator(this, function (_a) {
-                try {
-                    i = 0;
-                    while (i < 25) {
-                        this.vecPuzzleClear.push(0);
-                        i++;
-                    }
-                    // this.score = this.parseItem2Number("score");
-                    // this.score1min = this.parseItem2Number("score30");
-                    // this.score30 = this.parseItem2Number("score1min");
-                    // this.score1combo = this.parseItem2Number("score1combo");
-                    // this.getScore();
-                    // this.getScore30();
-                    // this.getScore1combo();
-                    // this.getScore1min();
-                    // let resultData = await platform.getStorage("score");
-                    // this.score = resultData;
-                    // resultData = await platform.getStorage("score30")
-                    // this.score30 = resultData;
-                    // resultData = await platform.getStorage("score1min")
-                    // this.score1min = resultData;
-                    // resultData = await platform.getStorage("score1combo")
-                    // this.score1combo = resultData;
-                    console.log("init:", this.score, this.score30, this.score1min, this.score1combo);
-                }
-                catch (e) {
-                    console.error(e);
-                }
-                return [2 /*return*/];
-            });
-        });
+        try {
+            this.showShareMenu();
+            this.getUpdateManager();
+            var i = 0;
+            while (i < 25) {
+                this.vecPuzzleClear.push(0);
+                i++;
+            }
+            this.getScore();
+            this.getScore30();
+            this.getScore1combo();
+            this.getScore1min();
+            console.log("init:", this.score, this.score30, this.score1min, this.score1combo);
+        }
+        catch (e) {
+            console.error(e);
+        }
     };
     SharedManagerClass.prototype.getPuzzleClearNum = function () {
         return;
     };
     SharedManagerClass.prototype.getScore = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/];
-            });
-        });
+        var resultData = this.getItem('score');
+        if (!resultData || resultData == '') {
+            resultData = '0';
+        }
+        try {
+            this.score = parseInt(resultData, 10);
+        }
+        catch (e) {
+        }
     };
     SharedManagerClass.prototype.getScore30 = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/];
-            });
-        });
+        var resultData = this.getItem('score30');
+        if (!resultData || resultData == '') {
+            resultData = '0';
+        }
+        try {
+            this.score30 = parseInt(resultData, 10);
+        }
+        catch (e) {
+        }
     };
     SharedManagerClass.prototype.getScore1min = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/];
-            });
-        });
+        var resultData = this.getItem('score1min');
+        if (!resultData || resultData == '') {
+            resultData = '0';
+        }
+        try {
+            this.score1min = parseInt(resultData, 10);
+        }
+        catch (e) {
+        }
     };
     SharedManagerClass.prototype.getScore1combo = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/];
-            });
-        });
+        var resultData = this.getItem('score1combo');
+        if (!resultData || resultData == '') {
+            resultData = '0';
+        }
+        try {
+            this.score1combo = parseInt(resultData, 10);
+        }
+        catch (e) {
+        }
     };
     SharedManagerClass.prototype.getPerfect = function () {
     };
@@ -716,7 +723,7 @@ var SharedManagerClass = (function () {
     };
     SharedManagerClass.prototype.saveUserName = function (uname) {
         this.userName = uname;
-        // this.setItem("userName", uname);
+        this.setItem("userName", uname);
     };
     SharedManagerClass.prototype.soundChange = function () {
         this.sound = !this.sound;
@@ -731,32 +738,35 @@ var SharedManagerClass = (function () {
         }
         return score;
     };
-    SharedManagerClass.prototype.parseItem2Bool = function () {
-    };
     SharedManagerClass.prototype.getItem = function (key) {
-        // let resultData = platform.getStorage(key).then((result) => {
-        // 	console.log("getItem:", result);
-        // });
         var resultData = egret.localStorage.getItem(key);
-        // console.log("getItem:", resultData);
-        // return resultData['data'];
-        // let resultData =await platform.getStorage(key)
         return resultData;
     };
-    SharedManagerClass.prototype.getItem2 = function (key) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/];
-            });
-        });
-    };
     SharedManagerClass.prototype.setItem = function (key, value) {
-        egret.localStorage.setItem(key, value.toString());
-        // platform.uploadWXData(key, value);
-        // platform.setStorage(key, value);
+        if (typeof (value) == 'number') {
+            value = value.toString();
+        }
+        egret.localStorage.setItem(key, value);
     };
     SharedManagerClass.prototype.showShareMenu = function () {
+        var _this = this;
         platform.showShareMenu({ withShareTicket: false });
+        platform.onShareAppMessage(function () {
+            var shareIndex = ~~(Math.random() * (_this.titles.length - 1));
+            return {
+                title: _this.titles[shareIndex][0],
+                imageUrl: _this.titles[shareIndex][1],
+                query: ""
+            };
+        });
+    };
+    SharedManagerClass.prototype.shareAppMessage = function () {
+        var shareIndex = ~~(Math.random() * (this.titles.length - 1));
+        platform.shareAppMessage({
+            title: this.titles[shareIndex][0],
+            imageUrl: this.titles[shareIndex][1],
+            query: '',
+        });
     };
     /**
      * 微信小游戏更新管理
@@ -1245,6 +1255,7 @@ var ClearSprite = (function (_super) {
                 break;
             case this.nextGroup:
                 if (this.isFinish) {
+                    SharedManager.shareAppMessage();
                 }
                 else {
                     var stageData = StageManager.getStage(-1);
@@ -1689,11 +1700,10 @@ var DebugPlatform = (function () {
         });
     };
     DebugPlatform.prototype.shareAppMessage = function (object) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/];
-            });
-        });
+    };
+    DebugPlatform.prototype.showShareMenu = function (object) {
+    };
+    DebugPlatform.prototype.onShareAppMessage = function (callback) {
     };
     DebugPlatform.prototype.uploadWXData = function (key, value) {
         return __awaiter(this, void 0, void 0, function () {
@@ -1715,8 +1725,6 @@ var DebugPlatform = (function () {
                 return [2 /*return*/];
             });
         });
-    };
-    DebugPlatform.prototype.showShareMenu = function (object) {
     };
     DebugPlatform.prototype.getUpdateManager = function () { };
     return DebugPlatform;
