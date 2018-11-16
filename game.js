@@ -16,17 +16,7 @@ egret.runEgret({
     //以下为自动修改，请勿修改
     //The following is automatically modified, please do not modify
     //----auto option start----
-		entryClassName: "Main",
-		orientation: "auto",
-		frameRate: 30,
-		scaleMode: "fixedWidth",
-		contentWidth: 640,
-		contentHeight: 1136,
-		showFPS: false,
-		fpsStyles: "x:0,y:0,size:12,textColor:0xffffff,bgAlpha:0.9",
-		showLog: false,
-		maxTouches: 2,
-		//----auto option end----
+    //----auto option end----
     renderMode: 'webgl',
     audioType: 0,
     calculateCanvasScaleFactor: function (context) {
